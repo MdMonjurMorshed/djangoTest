@@ -2,7 +2,10 @@
 
 {% block title %} Product List {% endblock %}
 
+
+
 {% block content %}
+
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Products</h1>
@@ -10,16 +13,58 @@
 
 
     <div class="card">
+ 
+
         <form action="" method="get" class="card-header">
             <div class="form-row justify-content-between">
                 <div class="col-md-2">
                     <input type="text" name="title" placeholder="Product Title" class="form-control">
                 </div>
-                <div class="col-md-2">
-                    <select name="variant" id="" class="form-control">
-                        <option selected disabled>--Select A Variant--</option>
+        <div class="col-md-2">
+                    
+            
+            
+          
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha512-I5TkutApDjnWuX+smLIPZNhw+LhTd8WrQhdCKsxCFRSvhFx2km8ZfEpNIhF9nq04msHhOkE8BMOBj5QE07yhMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha512-rO2SXEKBSICa/AfyhEK5ZqWFCOok1rcgPYfGOqtX35OyiraBg6Xa4NnBJwXgpIRoXeWjcAmcQniMhp22htDc6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-                    </select>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+     
+       
+        <select class="form-control " name="variant" id="var_select">
+       <option value="" selected disabled>Select Variant</option>
+      <optgroup label="Size">
+        {% for pv in product_variant  %}
+  
+        {% if pv.variant == 1 %}
+        <option value="{{pv.variant_title}}">{{pv.variant_title}}</option>
+        {% endif %}
+      {% endfor %}
+      </optgroup>
+      <optgroup label="Colors">
+        {% for pv in product_variant  %}
+  
+        {% if pv.variant == 2 %}
+        <option value="{{pv.variant_title}}">{{pv.variant_title}}</option>
+        {% endif %}
+      {% endfor %}
+
+      </optgroup>
+      <optgroup label="Style" >
+        {% for pv in product_variant  %}
+  
+        {% if pv.variant == 3 %}
+        <option value="{{pv.variant_title}}">{{pv.variant_title}}</option>
+        {% endif %}
+      {% endfor %}
+
+      </optgroup>
+      
+      
+        </select>
                 </div>
 
                 <div class="col-md-3">
@@ -55,50 +100,32 @@
                     </thead>
 
                     <tbody>
+                     {% for pro in products  %}  
                     <tr>
-                        <td>1</td>
-                        <td>T-Shirt <br> Created at : 25-Aug-2020</td>
-                        <td>Quality product in low cost</td>
+                        <td>{{pro.id}}</td>
+                        <td>{{pro.title}}<br> Created at : {{pro.created_at}}</td>
+                        <td>{{pro.description}}</td>
                         <td>
-                            <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                            
+                              
+                            <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant-{{pro.id}}">
+                             {% for var_price in  variant_price %}
+                               {% if var_price.product_id == pro.id  %}
                                 <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Full
+                                    {{var_price.product_variant_one.variant_title}}/  {{var_price.product_variant_two.variant_title}}/  {{var_price.product_variant_three.variant_title}}
                                 </dt>
                                 <dd class="col-sm-9">
                                     <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
+                                        <dd class="col-sm-4 pb-0">{{var_price.price}}</dd>
+                                        <dd class="col-sm-8 pb-0">{{var_price.stock}}</dd>
                                     </dl>
                                 </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Full
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
+                                 {% endif %}
+                                {% endfor %}
+                                
                             </dl>
-                            <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
+                           
+                            <button onclick="$('#variant-{{pro.id}}').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
                             </button>
                         </td>
                         <td>
@@ -107,6 +134,7 @@
                             </div>
                         </td>
                     </tr>
+                    {% endfor %} 
                     </tbody>
 
                 </table>
@@ -117,12 +145,101 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
-                    <p>Showing 1 to 10 out of 100</p>
+                    <p>Showing {{page_obj.start_index}} to {{page_obj.end_index}} out of {{ page_obj.paginator.count}}</p>
+                   
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
+                    <nav aria-label="Page navigation example">
 
+                        {% if is_paginated %}
+                        <ul class="pagination">
+                        
+                       
+                          {% if page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.previous_page_number}}"
+                              >&laquo;</a
+                            >
+                          </li>
+                          {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#">&laquo;</a>
+                          </li>
+                          {% endif %} 
+                          
+                          
+                    
+                          {% for page in paginator.page_range %}
+                          {% if page_obj.number == page %}
+                          <li class="page-item"><a class="page-link active">{{ page }}</a></li>
+                          {% elif page > page_obj.number|add:"-3" and page < page_obj.number|add:"3" %}
+                            
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                          </li>
+                          {% elif page == 1 %}
+                            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                            {% if page_obj.number|add:"4" < page_obj.paginator.num_pages %}
+                                <li class="page-item">
+                                <a class="page-link" class="ellipsis" href="#">&hellip;</a>
+                              </li>
+                            {% endif %}
+                          {% elif page == page_obj.paginator.num_pages %}
+                            {% if page_obj.number|add:"-4" > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" class="ellipsis" href="#">&hellip;</a>
+                              </li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                              </li>
+                          {% endif %}
+                        {% endfor %}
+                          
+                           {% comment %} {% for i in paginator.page_range %} 
+                        {% if page_obj.number == i %} 
+                          <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+                          {% else %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                          </li>
+                          {% endif %}
+                           
+                          {% endfor %}  {% endcomment %}
+
+                          {% if page_obj.has_next %}
+                          <li class="page-item">
+                            <a href="?page={{page_obj.next_page_number}}" class="page-link"
+                              >&raquo;</a
+                            >
+                          </li>
+                          {% else %}
+                          <li class="page-item disabled">
+                            <a class="page-link">&raquo;</a>
+                          </li>
+                          {% endif %}
+                        </ul>
+                        {% endif %}
+                      </nav>
                 </div>
+                
             </div>
         </div>
     </div>
+
+    
+    
+
+    <script>
+        $(document).ready(function(){
+           $("#var_select").select2() ;
+
+          
+
+        })
+   
+         
+
+  
+    </script>
 {% endblock %}

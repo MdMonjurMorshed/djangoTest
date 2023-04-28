@@ -34,7 +34,7 @@ class ProductVariant(TimeStampMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.product__title + self.variant_title
+        return self.product.title + "-"+ self.variant_title
 
 class ProductVariantPrice(TimeStampMixin):
     product_variant_one = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, null=True,
@@ -48,4 +48,4 @@ class ProductVariantPrice(TimeStampMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.product_variant_one__variant_title + self.product_variant_two__variant_title + self.product_variant_three__variant_title
+        return self.product_variant_one.variant_title  +  self.product_variant_two.variant_title + self.product_variant_three.variant_title

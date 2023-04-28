@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
 import Dropzone from 'react-dropzone'
+import axios from 'axios';
 
 
 const CreateProduct = (props) => {
+    const [index,setIndex]=useState('')
+    const [stockIndex,setStockIndex]=useState('')
+    const [price,setPrice]=useState(0)
+    const [stock,setStock]=useState(0)
 
     const [productVariantPrices, setProductVariantPrices] = useState([])
 
@@ -14,6 +19,15 @@ const CreateProduct = (props) => {
             tags: []
         }
     ])
+    const[csrf,setCsrf]=useState('')
+
+    useEffect(()=>{
+        axios.get('http://127.0.0.1:8000/product/csrf_token').then(function(response){
+         setCsrf(response.data.csrf)
+        })
+    
+     },[])
+
     console.log(typeof props.variants)
     // handle click event of the Add button
     const handleAddClick = () => {
@@ -25,6 +39,7 @@ const CreateProduct = (props) => {
             tags: []
         }])
     };
+
 
     // handle input change on tag input
     const handleInputTagOnChange = (value, index) => {
@@ -73,10 +88,46 @@ const CreateProduct = (props) => {
         }, []);
         return ans;
     }
+   
 
     // Save product
     let saveProduct = (event) => {
         event.preventDefault();
+        //price and stock value
+        var price=document.querySelectorAll("#price")
+        var stock=document.querySelectorAll("#stock")
+        var price_values=Array.from(price).map(p=>p.value)
+        var stock_values=Array.from(stock).map(s=>s.value)
+        
+
+        //product value
+        var product_name=document.getElementById("product_name").value
+        var product_sku=document.getElementById("product_sku").value
+        var product_des=document.getElementById("product_des").value
+        
+        var product={
+            name:product_name,
+            sku:product_sku,
+            description:product_des
+        }
+
+        var data_list={
+            product:product,
+            variant:productVariants,
+            variantprice:productVariantPrices,
+            price:price_values,
+            stock:stock_values
+
+        }
+        axios.post("/product/saveProduct/",data_list,{
+            headers:{
+                "X-CSRFToken":csrf
+    
+            }
+           }).then(function(response){
+            console.log(response)
+           })
+       
         // TODO : write your code here to save the product
     }
 
@@ -90,15 +141,15 @@ const CreateProduct = (props) => {
                             <div className="card-body">
                                 <div className="form-group">
                                     <label htmlFor="">Product Name</label>
-                                    <input type="text" placeholder="Product Name" className="form-control"/>
+                                    <input type="text" id="product_name" placeholder="Product Name" className="form-control"/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="">Product SKU</label>
-                                    <input type="text" placeholder="Product Name" className="form-control"/>
+                                    <input type="text" id="product_sku" placeholder="Product Name" className="form-control"/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="">Description</label>
-                                    <textarea id="" cols="30" rows="4" className="form-control"></textarea>
+                                    <textarea id="product_des" cols="30" rows="4" className="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -201,8 +252,8 @@ const CreateProduct = (props) => {
                                                 return (
                                                     <tr key={index}>
                                                         <td>{productVariantPrice.title}</td>
-                                                        <td><input className="form-control" type="text"/></td>
-                                                        <td><input className="form-control" type="text"/></td>
+                                                        <td><input className="form-control" id="price"  type="text"/></td>
+                                                        <td><input className="form-control" id="stock"  type="text"/></td>
                                                     </tr>
                                                 )
                                             })

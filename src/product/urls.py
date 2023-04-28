@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import TemplateView
 
-from product.views.product import CreateProductView
+from product.views.product import *
 from product.views.variant import VariantView, VariantCreateView, VariantEditView
 
 app_name = "product"
@@ -17,4 +17,9 @@ urlpatterns = [
     path('list/', TemplateView.as_view(template_name='products/list.html', extra_context={
         'product': True
     }), name='list.product'),
+    path("product-list/",ProductList.as_view(),name="product-list"),
+    path('data/',GetData.as_view(),name='data'),
+    path('csrf_token/',CsrfToken.as_view(),name='csrf_token'),
+     path('saveProduct/',postProduct.as_view(),name='saveProduct'),
+    
 ]
